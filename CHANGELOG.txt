@@ -1,0 +1,11 @@
+HELVETICREBOUND CHANGELOG
+
+V0.1 – Phase 1
+- Erste spielbare Fassung
+- 10 Level
+- Tastatur-, Maus- und Touchsteuerung
+- Punkte, 3 Leben, lokaler Highscore
+- Pause und Neustart
+- Swissness-Grunddesign
+- Keine externen Bibliotheken
+- Security-Check durchgeführt
