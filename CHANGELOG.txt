@@ -1,11 +1,19 @@
 HELVETICREBOUND CHANGELOG
 
-V0.1 – Phase 1
-- Erste spielbare Fassung
-- 10 Level
-- Tastatur-, Maus- und Touchsteuerung
-- Punkte, 3 Leben, lokaler Highscore
-- Pause und Neustart
-- Swissness-Grunddesign
-- Keine externen Bibliotheken
+V0.2 – Phase 2
+- Ausbau auf 25 Levels
+- Deutsch/Englisch umschaltbar
+- Bedienungsanleitung im Spiel integriert
+- Development-Modus: Start bei Level 5, 10, 15, 20 oder 25
+- Development-Ergebnisse vom normalen Highscore ausgeschlossen
+- Ab Level 15: blauer 2×-Sonderblock setzt zweiten Ball frei
+- Ein Leben geht im Mehrballspiel erst verloren, wenn kein Ball mehr vorhanden ist
+- Neue zweisprachige Bedienungs- und Leveldokumentation
 - Security-Check durchgeführt
+
+V0.1.1 – Fehlerkorrektur
+- Neustart nach Game Over korrigiert
+- Leben können nicht unter 0 fallen
+
+V0.1 – Phase 1
+- Erste spielbare Fassung mit 10 Levels

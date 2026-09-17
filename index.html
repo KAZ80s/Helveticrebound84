@@ -4,21 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#b00020">
-  <title>HelveticRebound V0.1</title>
+  <title>HelveticRebound V0.2</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="shell">
     <header>
       <h1>HELVETIC<span>REBOUND</span></h1>
-      <div class="sub">PHASE 1 · V0.1</div>
+      <div class="sub">PHASE 2 · V0.2</div>
+      <div class="top-actions">
+        <button id="langBtn" class="small secondary" type="button">EN</button>
+        <button id="helpBtn" class="small secondary" type="button" data-i18n="help">ANLEITUNG</button>
+        <button id="devBtn" class="small secondary" type="button">DEVELOPMENT</button>
+      </div>
     </header>
 
     <section class="hud" aria-label="Spielstatus">
-      <div>LEVEL <strong id="level">1</strong></div>
-      <div>PUNKTE <strong id="score">0</strong></div>
-      <div>LEBEN <strong id="lives">3</strong></div>
-      <div>HIGHSCORE <strong id="highscore">0</strong></div>
+      <div><span data-i18n="level">LEVEL</span> <strong id="level">1</strong></div>
+      <div><span data-i18n="score">PUNKTE</span> <strong id="score">0</strong></div>
+      <div><span data-i18n="lives">LEBEN</span> <strong id="lives">3</strong></div>
+      <div><span data-i18n="highscore">HIGHSCORE</span> <strong id="highscore">0</strong></div>
     </section>
 
     <section class="game-wrap">
@@ -26,21 +31,54 @@
       <div id="overlay" class="overlay">
         <div class="panel">
           <h2 id="overlayTitle">HELVETICREBOUND</h2>
-          <p id="overlayText">Zerstöre alle Zielblöcke. Bewege das Paddle und halte den Ball im Spiel.</p>
+          <p id="overlayText">Zerstöre alle Zielblöcke. Bewege den Schläger und halte den Ball im Spiel.</p>
           <button id="startBtn">SPIEL STARTEN</button>
-          <p class="keys">← → / A D · Maus/Touch · P = Pause · R = Neustart</p>
+          <p class="keys" data-i18n="keys">← → / A D · Maus/Touch · P = Pause · R = Neustart</p>
         </div>
       </div>
     </section>
 
     <section class="controls">
       <button id="leftBtn" aria-label="Nach links">◀</button>
-      <button id="pauseBtn" aria-label="Pause">PAUSE</button>
+      <button id="pauseBtn" aria-label="Pause" data-i18n="pause">PAUSE</button>
       <button id="rightBtn" aria-label="Nach rechts">▶</button>
     </section>
 
-    <footer>Eigenständiger Retro-Arcade-Prototyp · keine externen Bibliotheken · lokale Speicherung nur für Highscore</footer>
+    <footer data-i18n="footer">Eigenständiges Retro-Arcadespiel · keine externen Bibliotheken · lokale Speicherung nur für Highscore und Sprache</footer>
   </main>
+
+  <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal-card">
+      <button class="close" data-close="helpModal" aria-label="Schliessen">×</button>
+      <section class="lang-copy lang-de">
+        <h2 id="helpTitle">BEDIENUNGSANLEITUNG</h2>
+        <h3>Ziel</h3><p>Zerstöre alle Blöcke, ohne alle Leben zu verlieren. Ab Level 15 setzt der blau markierte Sonderblock beim Zerstören einen zweiten Ball frei.</p>
+        <h3>Steuerung</h3><p>←/→ oder A/D: Schläger bewegen · Maus/Touch: Position steuern · P: Pause · R: neues Spiel.</p>
+        <h3>Spielregeln</h3><p>Du startest mit 3 Leben. Ein Leben geht erst verloren, wenn kein Ball mehr im Spielfeld ist. Weisse Blöcke benötigen zwei Treffer. Der Highscore wird lokal gespeichert.</p>
+        <h3>Development-Modus</h3><p>Erlaubt Teststarts bei Level 5, 10, 15, 20 oder 25. Punkte und Leben werden dabei neu gestartet. Ergebnisse aus diesem Modus verändern den Highscore nicht.</p>
+      </section>
+      <section class="lang-copy lang-en hidden">
+        <h2>INSTRUCTIONS</h2>
+        <h3>Goal</h3><p>Destroy all blocks without losing all lives. From level 15, destroying the blue special block releases a second ball.</p>
+        <h3>Controls</h3><p>←/→ or A/D: move paddle · Mouse/touch: control position · P: pause · R: new game.</p>
+        <h3>Rules</h3><p>You start with 3 lives. A life is lost only when no ball remains. White blocks need two hits. The high score is stored locally.</p>
+        <h3>Development mode</h3><p>Allows test starts at level 5, 10, 15, 20 or 25. Score and lives are reset. Results from this mode do not change the high score.</p>
+      </section>
+    </div>
+  </div>
+
+  <div id="devModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="devTitle">
+    <div class="modal-card compact">
+      <button class="close" data-close="devModal" aria-label="Schliessen">×</button>
+      <h2 id="devTitle">DEVELOPMENT MODE</h2>
+      <p data-i18n="devInfo">Testlevel auswählen. Punkte und Leben beginnen neu.</p>
+      <div class="dev-levels">
+        <button data-dev-level="5">LEVEL 5</button><button data-dev-level="10">LEVEL 10</button>
+        <button data-dev-level="15">LEVEL 15</button><button data-dev-level="20">LEVEL 20</button>
+        <button data-dev-level="25">LEVEL 25</button>
+      </div>
+    </div>
+  </div>
   <script src="game.js"></script>
 </body>
 </html>
