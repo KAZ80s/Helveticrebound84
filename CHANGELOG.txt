@@ -1,19 +1,10 @@
-HELVETICREBOUND CHANGELOG
+V0.4.1 – Development Levels
 
-V0.2 – Phase 2
-- Ausbau auf 25 Levels
-- Deutsch/Englisch umschaltbar
-- Bedienungsanleitung im Spiel integriert
-- Development-Modus: Start bei Level 5, 10, 15, 20 oder 25
-- Development-Ergebnisse vom normalen Highscore ausgeschlossen
-- Ab Level 15: blauer 2×-Sonderblock setzt zweiten Ball frei
-- Ein Leben geht im Mehrballspiel erst verloren, wenn kein Ball mehr vorhanden ist
-- Neue zweisprachige Bedienungs- und Leveldokumentation
-- Security-Check durchgeführt
-
-V0.1.1 – Fehlerkorrektur
-- Neustart nach Game Over korrigiert
-- Leben können nicht unter 0 fallen
-
-V0.1 – Phase 1
-- Erste spielbare Fassung mit 10 Levels
+- Development-Auswahl auf Level 3, 6, 9, 12, 15, 18, 21 und 24 umgestellt.
+- Ungültige Development-Starts fallen sicher auf Level 3 zurück.
+- Jeder Development-Lauf beginnt mit 3 Leben und 0 Punkten.
+- Development-Ergebnisse bleiben von Highscore und regulären Freischaltungen getrennt.
+- Normale Startlevel 5/10/15/20/25 und deren 10/10-Freischaltung unverändert beibehalten.
+- Zweisprachige In-Game-Anleitung und Begleitdokumentation aktualisiert.
+- Regressionstests für alle 25 Levels, Bonusrunden, Sonderblöcke, Bewegung, Speicher und Neustart bestanden.
+- Security-Prüfung: niedriges Zusatzrisiko; feste Level-Liste, keine neuen Abhängigkeiten oder Netzwerkfunktionen.

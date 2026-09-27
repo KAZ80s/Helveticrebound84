@@ -4,17 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#b00020">
-  <title>HelveticRebound V0.2</title>
+  <title>HelveticRebound V0.4.1</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="shell">
     <header>
       <h1>HELVETIC<span>REBOUND</span></h1>
-      <div class="sub">PHASE 2 · V0.2</div>
+      <div class="sub">V0.4.1 · DEVELOPMENT LEVELS</div>
       <div class="top-actions">
         <button id="langBtn" class="small secondary" type="button">EN</button>
         <button id="helpBtn" class="small secondary" type="button" data-i18n="help">ANLEITUNG</button>
+        <button id="selectBtn" class="small secondary" type="button">STARTLEVEL</button>
         <button id="devBtn" class="small secondary" type="button">DEVELOPMENT</button>
       </div>
     </header>
@@ -47,7 +48,7 @@
     <footer data-i18n="footer">Eigenständiges Retro-Arcadespiel · keine externen Bibliotheken · lokale Speicherung nur für Highscore und Sprache</footer>
   </main>
 
-  <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Anleitung">
     <div class="modal-card">
       <button class="close" data-close="helpModal" aria-label="Schliessen">×</button>
       <section class="lang-copy lang-de">
@@ -55,14 +56,14 @@
         <h3>Ziel</h3><p>Zerstöre alle Blöcke, ohne alle Leben zu verlieren. Ab Level 15 setzt der blau markierte Sonderblock beim Zerstören einen zweiten Ball frei.</p>
         <h3>Steuerung</h3><p>←/→ oder A/D: Schläger bewegen · Maus/Touch: Position steuern · P: Pause · R: neues Spiel.</p>
         <h3>Spielregeln</h3><p>Du startest mit 3 Leben. Ein Leben geht erst verloren, wenn kein Ball mehr im Spielfeld ist. Weisse Blöcke benötigen zwei Treffer. Der Highscore wird lokal gespeichert.</p>
-        <h3>Development-Modus</h3><p>Erlaubt Teststarts bei Level 5, 10, 15, 20 oder 25. Punkte und Leben werden dabei neu gestartet. Ergebnisse aus diesem Modus verändern den Highscore nicht.</p>
+        <h3>Bonus und Freischaltungen</h3><p>Grüner ↔-Block: 15 Sekunden breiter Schläger. Nach Level 5/10/15/20/25: Schweizer Bonus mit 30 Sekunden und ohne Lebensverlust. Leerräumen beendet den Bonus vorzeitig. Pause und Anleitung halten beide Timer an. Nach 10 regulären Abschlüssen eines fünften Levels wird dieses als Startlevel freigeschaltet. Fortschritt unter STARTLEVEL; Development zählt nicht. Bisherige V0.2-Abschlüsse wurden nicht gespeichert und können nicht rückwirkend gezählt werden.</p><h3>Neu in V0.4</h3><p>Ab Level 5: gelber S-Block aktiviert eine Schutzlinie, die genau einen fallenden Ball zurückwirft. Auch bei zwei Bällen gilt sie nur einmal. Sie endet spätestens am Levelwechsel; Bonuslevels haben keine Schutzblöcke. Ab Level 11 bewegt sich eine violett umrandete Reihe langsam seitwärts; ab Level 20 sind es zwei. Pause und Anleitung halten die Bewegung an.</p><h3>Development-Modus</h3><p>Erlaubt Teststarts bei Level 3, 6, 9, 12, 15, 18, 21 oder 24. Punkte und Leben werden dabei neu gestartet. Ergebnisse aus diesem Modus verändern weder Highscore noch Freischaltungen.</p>
       </section>
       <section class="lang-copy lang-en hidden">
         <h2>INSTRUCTIONS</h2>
         <h3>Goal</h3><p>Destroy all blocks without losing all lives. From level 15, destroying the blue special block releases a second ball.</p>
         <h3>Controls</h3><p>←/→ or A/D: move paddle · Mouse/touch: control position · P: pause · R: new game.</p>
         <h3>Rules</h3><p>You start with 3 lives. A life is lost only when no ball remains. White blocks need two hits. The high score is stored locally.</p>
-        <h3>Development mode</h3><p>Allows test starts at level 5, 10, 15, 20 or 25. Score and lives are reset. Results from this mode do not change the high score.</p>
+        <h3>Bonus and unlocks</h3><p>Green ↔ block: wider paddle for 15 seconds. After levels 5/10/15/20/25: a 30-second Swiss bonus without life loss. Clearing all blocks ends it early. Pause and instructions freeze both timers. Complete a milestone level 10 times in normal play to unlock it as a starting level. START LEVEL shows progress; development runs do not count. V0.2 did not record completions, so previous results cannot be counted retroactively.</p><h3>New in V0.4</h3><p>From level 5: the yellow S block activates a safety line that returns exactly one falling ball, including during multiball. The line expires on a level change. Bonus rounds have no shield blocks. From level 11, one purple-outlined row moves slowly sideways; from level 20, two rows move. Pause and instructions freeze their movement.</p><h3>Development mode</h3><p>Allows test starts at levels 3, 6, 9, 12, 15, 18, 21 or 24. Score and lives are reset. Results from this mode change neither the high score nor unlock progress.</p>
       </section>
     </div>
   </div>
@@ -72,13 +73,15 @@
       <button class="close" data-close="devModal" aria-label="Schliessen">×</button>
       <h2 id="devTitle">DEVELOPMENT MODE</h2>
       <p data-i18n="devInfo">Testlevel auswählen. Punkte und Leben beginnen neu.</p>
-      <div class="dev-levels">
-        <button data-dev-level="5">LEVEL 5</button><button data-dev-level="10">LEVEL 10</button>
-        <button data-dev-level="15">LEVEL 15</button><button data-dev-level="20">LEVEL 20</button>
-        <button data-dev-level="25">LEVEL 25</button>
+      <div class="dev-levels dev-grid">
+        <button data-dev-level="3">LEVEL 3</button><button data-dev-level="6">LEVEL 6</button>
+        <button data-dev-level="9">LEVEL 9</button><button data-dev-level="12">LEVEL 12</button>
+        <button data-dev-level="15">LEVEL 15</button><button data-dev-level="18">LEVEL 18</button>
+        <button data-dev-level="21">LEVEL 21</button><button data-dev-level="24">LEVEL 24</button>
       </div>
     </div>
   </div>
+  <div id="selectModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="selectTitle"><div class="modal-card compact"><button class="close" data-close="selectModal">×</button><h2 id="selectTitle">STARTLEVEL</h2><div class="dev-levels"><button data-normal-level="1">Level 1</button><button data-normal-level="5">Level 5</button><button data-normal-level="10">Level 10</button><button data-normal-level="15">Level 15</button><button data-normal-level="20">Level 20</button><button data-normal-level="25">Level 25</button></div></div></div>
   <script src="game.js"></script>
 </body>
 </html>
