@@ -8,12 +8,12 @@
     highscore:Number(storage.getItem("helveticReboundHighscore")||0),lang:storedLang==="en"?"en":"de",devMode:false,devStartLevel:1};
   const paddle={x:W/2-70,y:H-45,w:140,h:16,speed:620};
   let balls=[],bricks=[],last=performance.now();
-  const milestones=[5,10,15,20,25];
-  const developmentLevels=[3,6,9,12,15,18,21,24];
+  const milestones=[5,10,15,20,25,30];
+  const developmentLevels=[3,6,9,12,15,18,21,24,27,30];
   let progress={};
   try{const raw=JSON.parse(storage.getItem("helveticReboundProgress")||"{}");for(const n of milestones)progress[n]=Number.isInteger(raw?.[n])?Math.max(0,Math.min(10,raw[n])):0}catch{progress={}}
   if(!Number.isSafeInteger(state.highscore)||state.highscore<0)state.highscore=0;
-  let bonus=false,bonusTime=0,wideTime=0,modalOpen=null,screen="intro",newUnlock=0;
+  let bonus=false,bonusTime=0,wideTime=0,launchDelay=0,modalOpen=null,screen="intro",newUnlock=0;
   let shield=false,motionTime=0;
   const say=(de,en)=>state.lang==="de"?de:en;
   function resetWidth(){wideTime=0;paddle.w=140;paddle.x=Math.min(paddle.x,W-paddle.w-8)}
@@ -31,12 +31,12 @@
   }
   function startBonus(){shield=false;motionTime=0;bonus=true;bonusTime=30;shield=false;motionTime=0;resetWidth();bricks=[];for(let r=0;r<7;r++)for(let c=0;c<11;c++)if(Math.abs(c-5)<=1||Math.abs(r-3)<=1)bricks.push({x:100+c*64,y:80+r*30,w:57,h:24,hp:1,multi:false,wide:false});resetBalls(true);state.running=false;screen="bonus";refreshScreens()}
   function finishBonus(){bonus=false;resetWidth();saveHighscore();advanceLevel()}
-  function advanceLevel(){state.running=false;if(state.level===25){state.level=26;screen="done"}else{state.level++;buildLevel(state.level);screen="level"}refreshScreens()}
+  function advanceLevel(){state.running=false;if(state.level===30){state.level=31;screen="done"}else{state.level++;buildLevel(state.level);screen="level"}refreshScreens()}
 
 
   const T={
-    de:{help:"ANLEITUNG",level:"LEVEL",score:"PUNKTE",lives:"LEBEN",highscore:"HIGHSCORE",pause:"PAUSE",footer:"Eigenständiges Retro-Arcadespiel · keine externen Bibliotheken · lokale Speicherung: Highscore, Sprache und Freischaltungen",keys:"← → / A D · Maus/Touch · P = Pause · R = Neustart",devInfo:"Testlevel auswählen. Punkte und Leben beginnen neu.",start:"SPIEL STARTEN",next:"WEITER",newGame:"NEUES SPIEL",again:"NOCHMAL",gameOver:"GAME OVER",ballLost:"BALL VERLOREN",phaseDone:"ALLE LEVELS GESCHAFFT",points:"Punkte",high:"Highscore",remaining:"Noch {n} Leben.",allDone:"Alle 25 Levels abgeschlossen. Punkte: {n}",levelLabel:"LEVEL {n}",devStart:"Development-Start bei Level {n}"},
-    en:{help:"INSTRUCTIONS",level:"LEVEL",score:"SCORE",lives:"LIVES",highscore:"HIGH SCORE",pause:"PAUSE",footer:"Independent retro arcade game · no external libraries · local storage: high score, language and unlock progress",keys:"← → / A D · Mouse/Touch · P = Pause · R = Restart",devInfo:"Select a test level. Score and lives start over.",start:"START GAME",next:"CONTINUE",newGame:"NEW GAME",again:"PLAY AGAIN",gameOver:"GAME OVER",ballLost:"BALL LOST",phaseDone:"ALL LEVELS COMPLETE",points:"Score",high:"High score",remaining:"{n} lives remaining.",allDone:"All 25 levels completed. Score: {n}",levelLabel:"LEVEL {n}",devStart:"Development start at level {n}"}
+    de:{help:"ANLEITUNG",level:"LEVEL",score:"PUNKTE",lives:"LEBEN",highscore:"HIGHSCORE",pause:"PAUSE",footer:"Eigenständiges Retro-Arcadespiel · keine externen Bibliotheken · lokale Speicherung: Highscore, Sprache und Freischaltungen",keys:"← → / A D · Maus/Touch · P = Pause · R = Neustart",devInfo:"Testlevel auswählen. Punkte und Leben beginnen neu.",start:"SPIEL STARTEN",next:"WEITER",newGame:"NEUES SPIEL",again:"NOCHMAL",gameOver:"GAME OVER",ballLost:"BALL VERLOREN",phaseDone:"ALLE LEVELS GESCHAFFT",points:"Punkte",high:"Highscore",remaining:"Noch {n} Leben.",allDone:"Alle 30 Levels abgeschlossen. Punkte: {n}",levelLabel:"LEVEL {n}",devStart:"Development-Start bei Level {n}",ready:"BEREIT"},
+    en:{help:"INSTRUCTIONS",level:"LEVEL",score:"SCORE",lives:"LIVES",highscore:"HIGH SCORE",pause:"PAUSE",footer:"Independent retro arcade game · no external libraries · local storage: high score, language and unlock progress",keys:"← → / A D · Mouse/Touch · P = Pause · R = Restart",devInfo:"Select a test level. Score and lives start over.",start:"START GAME",next:"CONTINUE",newGame:"NEW GAME",again:"PLAY AGAIN",gameOver:"GAME OVER",ballLost:"BALL LOST",phaseDone:"ALL LEVELS COMPLETE",points:"Score",high:"High score",remaining:"{n} lives remaining.",allDone:"All 30 levels completed. Score: {n}",levelLabel:"LEVEL {n}",devStart:"Development start at level {n}",ready:"READY"}
   };
 
   const rawLevels=[
@@ -44,7 +44,8 @@
     ["Gipfel","Summit",7,13,1.20,"peak"],["Gotthard","Gotthard",7,13,1.24,"tunnel"],["Eisfeld","Ice Field",8,13,1.28,"checker"],["Helvetia","Helvetia",8,14,1.32,"diamond"],["Finale I","Finale I",8,14,1.36,"finale"],
     ["Bergsee","Mountain Lake",6,12,1.38,"waves"],["Staumauer","Dam",7,13,1.40,"wall"],["Serpentine","Hairpins",7,13,1.42,"zigzag"],["Gletscher","Glacier",8,13,1.44,"checker"],["Doppelball","Twin Ball",8,14,1.46,"diamond"],
     ["Alpentunnel","Alpine Tunnel",8,14,1.48,"tunnel"],["Rhonebogen","Rhone Arc",8,14,1.50,"waves"],["Festung","Fortress",8,14,1.52,"wall"],["Schneestern","Snow Star",8,14,1.54,"cross"],["Finale II","Finale II",8,14,1.56,"finale"],
-    ["Jurakette","Jura Range",8,14,1.58,"mountain"],["Roter Diamant","Red Diamond",8,14,1.60,"diamond"],["Nordwand","North Face",8,14,1.62,"peak"],["Helvetic Mix","Helvetic Mix",8,14,1.64,"mixed"],["Grand Finale","Grand Finale",8,14,1.66,"grand"]
+    ["Jurakette","Jura Range",8,14,1.58,"mountain"],["Roter Diamant","Red Diamond",8,14,1.60,"diamond"],["Nordwand","North Face",8,14,1.62,"peak"],["Helvetic Mix","Helvetic Mix",8,14,1.64,"mixed"],["Grand Finale","Grand Finale",8,14,1.66,"grand"],
+    ["Alpenpass","Alpine Pass",8,14,1.68,"zigzag"],["Seeland","Lake Country",8,14,1.70,"waves"],["Staumauer II","Dam II",8,14,1.72,"wall"],["Winterstadt","Winter City",8,14,1.74,"mixed"],["Helvetic Finale","Helvetic Finale",8,14,1.76,"grand"]
   ];
   const LEVELS=rawLevels.map((x,i)=>({de:x[0],en:x[1],rows:x[2],cols:x[3],speed:x[4],pattern:x[5],number:i+1}));
   function tr(k){return T[state.lang][k]||k}
@@ -98,10 +99,10 @@
   function updateHUD(){$("level").textContent=state.level;$("score").textContent=state.score;$("lives").textContent=state.lives;$("highscore").textContent=state.highscore;$("devBtn").classList.toggle("dev-active",state.devMode)}
   function setOverlay(title,text,button){$("overlayTitle").textContent=title;$("overlayText").textContent=text;$("startBtn").textContent=button||tr("next");$("overlay").classList.remove("hidden")}
   function hideOverlay(){$("overlay").classList.add("hidden")}
-  function startOrContinue(){screen="playing";if(state.level>25||state.lives<=0){newGame(state.devStartLevel,state.devMode);return}hideOverlay();state.running=true;state.paused=false;balls.forEach(b=>b.stuck=false)}
-  function newGame(startLevel=1,dev=false){const valid=dev?(developmentLevels.includes(startLevel)?startLevel:3):(startLevel===1||(milestones.includes(startLevel)&&progress[startLevel]>=10)?startLevel:1);bonus=false;bonusTime=0;resetWidth();screen="playing";state.pointerX=null;state.left=false;state.right=false;state.level=valid;state.score=0;state.lives=3;state.running=true;state.paused=false;state.devMode=dev;state.devStartLevel=valid;buildLevel(valid);hideOverlay();balls.forEach(b=>b.stuck=false);updateHUD()}
+  function startOrContinue(){if(state.running)return;screen="playing";if(state.level>30||state.lives<=0){newGame(state.devStartLevel,state.devMode);return}hideOverlay();state.running=true;state.paused=false;launchDelay=1.8;balls.forEach(b=>b.stuck=true)}
+  function newGame(startLevel=1,dev=false){const valid=dev?(developmentLevels.includes(startLevel)?startLevel:3):(startLevel===1||(milestones.includes(startLevel)&&progress[startLevel]>=10)?startLevel:1);bonus=false;bonusTime=0;launchDelay=0;resetWidth();screen="playing";state.pointerX=null;state.left=false;state.right=false;state.level=valid;state.score=0;state.lives=3;state.running=true;state.paused=false;state.devMode=dev;state.devStartLevel=valid;buildLevel(valid);hideOverlay();balls.forEach(b=>b.stuck=false);updateHUD()}
   function loseLife(){
-    if(!state.running||state.lives<=0)return;if(bonus){resetBalls(false);return}shield=false;resetWidth();state.running=false;state.lives=Math.max(0,state.lives-1);updateHUD();
+    if(!state.running||state.lives<=0)return;if(bonus){resetBalls(false);return}shield=false;launchDelay=0;resetWidth();state.running=false;state.lives=Math.max(0,state.lives-1);updateHUD();
     if(state.lives<=0){state.running=false;balls.forEach(b=>b.stuck=true);saveHighscore();screen="over";setOverlay(tr("gameOver"),`${tr("points")}: ${state.score} · ${tr("high")}: ${state.highscore}`,tr("newGame"))}
     else{screen="lost";resetBalls(true);setOverlay(tr("ballLost"),tr("remaining").replace("{n}",state.lives),tr("next"))}
   }
@@ -133,9 +134,12 @@
   function step(dt){
     if(!state.running||state.paused||modalOpen)return;
     motionTime+=dt;for(const br of bricks)if(br.moving)br.x=br.baseX+12*Math.sin(motionTime*.65+(br.row===3?Math.PI:0));
+    if(launchDelay>0){launchDelay=Math.max(0,launchDelay-dt);if(launchDelay===0)balls.forEach(b=>b.stuck=false)}
     if(bonus){bonusTime=Math.max(0,bonusTime-dt);if(bonusTime<=0){finishBonus();return}}
     if(wideTime>0){wideTime=Math.max(0,wideTime-dt);if(wideTime===0)resetWidth()}
-    if(state.left)paddle.x-=paddle.speed*dt;if(state.right)paddle.x+=paddle.speed*dt;
+    const fastestSideways=Math.max(0,...balls.map(b=>Math.abs(b.vx)));
+    const paddleSpeed=Math.min(850,Math.max(paddle.speed,fastestSideways*1.18));
+    if(state.left)paddle.x-=paddleSpeed*dt;if(state.right)paddle.x+=paddleSpeed*dt;
     if(state.pointerX!==null)paddle.x+=(state.pointerX-paddle.w/2-paddle.x)*Math.min(1,dt*14);
     paddle.x=Math.max(8,Math.min(W-paddle.w-8,paddle.x));
     for(const ball of [...balls]){
@@ -157,16 +161,26 @@
     if(!balls.length){loseLife();return}if(bricks.every(b=>b.hp<=0))levelComplete();
   }
 
-  function drawBackground(){ctx.fillStyle="#080a0d";ctx.fillRect(0,0,W,H);ctx.fillStyle="#151922";ctx.beginPath();ctx.moveTo(0,390);for(const p of [[0,390],[100,320],[170,365],[280,250],[370,360],[475,285],[560,355],[690,230],[810,350],[900,300],[900,600],[0,600]])ctx.lineTo(p[0],p[1]);ctx.closePath();ctx.fill();ctx.fillStyle="#11141a";ctx.fillRect(0,430,W,170);ctx.globalAlpha=.08;ctx.fillStyle="#fff";ctx.fillRect(W-110,35,70,22);ctx.fillRect(W-86,11,22,70);ctx.globalAlpha=1}
+  function drawBackground(){
+    const world=Math.min(5,Math.floor((Math.max(1,state.level)-1)/5));
+    const skies=["#10090c","#07121c","#071821","#090b10","#0b1725","#100b1d"],grounds=["#17131a","#101923","#082838","#15161a","#14283a","#171526"];
+    ctx.fillStyle=skies[world];ctx.fillRect(0,0,W,H);ctx.fillStyle=grounds[world];ctx.fillRect(0,390,W,210);
+    if(world===2){ctx.fillStyle="#0d4057";ctx.fillRect(0,360,W,170);ctx.globalAlpha=.16;ctx.fillStyle="#b8efff";for(let y=380;y<520;y+=28)ctx.fillRect(0,y,W,2);ctx.globalAlpha=1}
+    else if(world===3){ctx.fillStyle="#24262c";ctx.fillRect(80,250,740,250);ctx.fillStyle="#080a0d";ctx.beginPath();ctx.arc(W/2,440,220,Math.PI,0);ctx.lineTo(670,520);ctx.lineTo(230,520);ctx.closePath();ctx.fill()}
+    else if(world===5){ctx.fillStyle="#25223a";for(let x=20;x<W;x+=75){const h=70+(x*7)%130;ctx.fillRect(x,390-h,55,h);ctx.fillStyle="#f4d35e";for(let y=405-h;y<380;y+=28)ctx.fillRect(x+12,y,8,10);ctx.fillStyle="#25223a"}}
+    else{ctx.fillStyle=world===4?"#d7e8f2":"#151922";ctx.beginPath();ctx.moveTo(0,390);for(const p of [[0,390],[100,320],[170,365],[280,250],[370,360],[475,285],[560,355],[690,230],[810,350],[900,300],[900,600],[0,600]])ctx.lineTo(p[0],p[1]);ctx.closePath();ctx.fill();if(world===4){ctx.globalAlpha=.55;ctx.fillStyle="#fff";for(let x=35;x<W;x+=85)for(let y=45;y<320;y+=70)ctx.fillRect(x+(y%40),y,3,3);ctx.globalAlpha=1}}
+    ctx.globalAlpha=.08;ctx.fillStyle="#fff";ctx.fillRect(W-110,35,70,22);ctx.fillRect(W-86,11,22,70);ctx.globalAlpha=1
+  }
   function draw(){
     drawBackground();if(bonus){ctx.fillStyle="#401018";ctx.fillRect(0,40,W,370)}
     for(const br of bricks){if(br.hp<=0)continue;ctx.fillStyle=br.shield?"#ffcf57":br.wide?"#35db83":br.multi?"#20c7e8":br.hp===2?"#f0f0f0":"#d71920";ctx.fillRect(br.x,br.y,br.w,br.h);ctx.strokeStyle=br.moving?"#ca9fff":br.multi?"#fff":"#ffffff33";ctx.strokeRect(br.x+.5,br.y+.5,br.w-1,br.h-1);if(br.multi||br.wide||br.shield){ctx.fillStyle="#082b33";ctx.font="bold 16px Arial";ctx.textAlign="center";ctx.fillText(br.shield?"S":br.wide?"↔":"2×",br.x+br.w/2,br.y+18);ctx.textAlign="left"}}
     if(shield){ctx.fillStyle="#ffcf57";ctx.fillRect(0,H-20,W,4);ctx.font="bold 14px Arial";ctx.fillText(say("SCHUTZ AKTIV · 1 BALL","SHIELD READY · 1 BALL"),W-245,H-30)}
     ctx.fillStyle="#f4f4f4";ctx.fillRect(paddle.x,paddle.y,paddle.w,paddle.h);ctx.fillStyle="#d71920";ctx.fillRect(paddle.x+paddle.w/2-10,paddle.y-4,20,paddle.h+8);
     for(const ball of balls){ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fillStyle="#fff";ctx.fill()}
-    if(state.level<=25){ctx.fillStyle="#ffffff88";ctx.font="16px Arial";ctx.fillText(levelName().toUpperCase(),22,30)}if(state.devMode){ctx.fillStyle="#20c7e8";ctx.font="bold 13px Arial";ctx.fillText("DEV",W-42,30)}
+    if(state.level<=30){ctx.fillStyle="#ffffff88";ctx.font="16px Arial";ctx.fillText(levelName().toUpperCase(),22,30)}if(state.devMode){ctx.fillStyle="#20c7e8";ctx.font="bold 13px Arial";ctx.fillText("DEV",W-42,30)}
     ctx.fillStyle="#35db83";ctx.font="bold 16px Arial";if(wideTime>0)ctx.fillText(say("BREITER SCHLÄGER ","WIDE PADDLE ")+Math.ceil(wideTime)+"s",22,H-12);
     if(bonus){ctx.fillStyle="#fff";ctx.fillText(say("SCHWEIZER BONUS · ","SWISS BONUS · ")+Math.ceil(bonusTime)+"s",300,30)}
+    if(launchDelay>0){ctx.fillStyle="#0008";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";ctx.font="bold 38px Arial";ctx.textAlign="center";ctx.fillText(`${tr("ready")} · ${Math.ceil(launchDelay)}`,W/2,H/2);ctx.textAlign="left"}
     if(state.paused){ctx.fillStyle="#000a";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";ctx.font="bold 42px Arial";ctx.textAlign="center";ctx.fillText(tr("pause"),W/2,H/2);ctx.textAlign="left"}
   }
   function loop(t){const dt=Math.min(.025,(t-last)/1000);last=t;update(dt);draw();requestAnimationFrame(loop)}

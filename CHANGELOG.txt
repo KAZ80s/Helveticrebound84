@@ -1,10 +1,16 @@
-V0.4.1 – Development Levels
+V0.5 – Swiss Worlds
 
-- Development-Auswahl auf Level 3, 6, 9, 12, 15, 18, 21 und 24 umgestellt.
+- Spielumfang von 25 auf 30 Levels erweitert.
+- Sechs wechselnde Schweizer Hintergrundwelten ergänzt.
+- Neue Levels 26–30: Alpenpass, Seeland, Staumauer II, Winterstadt und Helvetic Finale.
+- Development-Auswahl um Level 27 und 30 erweitert.
+- Level 30 als reguläres Startlevel nach 10 Abschlüssen ergänzt.
+- Nach WEITER startet eine 1,8-Sekunden-Bereitschaftsphase; der Schläger ist bereits steuerbar.
+- Dynamische Schlägergeschwindigkeit: rund 18 % schneller als die höchste seitliche Ballgeschwindigkeit.
 - Ungültige Development-Starts fallen sicher auf Level 3 zurück.
 - Jeder Development-Lauf beginnt mit 3 Leben und 0 Punkten.
 - Development-Ergebnisse bleiben von Highscore und regulären Freischaltungen getrennt.
-- Normale Startlevel 5/10/15/20/25 und deren 10/10-Freischaltung unverändert beibehalten.
+- Bestehende Startlevel 5/10/15/20/25 und gespeicherte Fortschritte bleiben kompatibel.
 - Zweisprachige In-Game-Anleitung und Begleitdokumentation aktualisiert.
-- Regressionstests für alle 25 Levels, Bonusrunden, Sonderblöcke, Bewegung, Speicher und Neustart bestanden.
+- Regressionstests für alle 30 Levels, sechs Hintergründe, Bonusrunden, Sonderblöcke, Bewegung, Bereitschaftsphase, Speicher und Neustart bestanden.
 - Security-Prüfung: niedriges Zusatzrisiko; feste Level-Liste, keine neuen Abhängigkeiten oder Netzwerkfunktionen.
